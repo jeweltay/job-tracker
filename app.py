@@ -8,19 +8,19 @@ app = Flask(__name__)
 
 # Database config - works both locally and in production
 if 'DATABASE_URL' in os.environ:
-    # Production (on Render.com) - force pg8000 usage
-    db_url = os.environ['DATABASE_URL'].replace("postgres://", "postgresql+pg8000://", 1)
-    app.config["SQLALCHEMY_DATABASE_URI"] = db_url
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-        "connect_args": {
-            "sslmode": "require"
-        },
-        "pool_pre_ping": True
-    }
+	# Production (on Render.com) - force pg8000 usage
+	db_url = os.environ['DATABASE_URL'].replace("postgres://", "postgresql+pg8000://", 1)
+	app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+	app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+		"connect_args": {
+			"sslmode": "require"
+		},
+		"pool_pre_ping": True
+	}
 else:
-    # Local development (on laptop)
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "jobscore.db")
+	# Local development (on laptop)
+	basedir = os.path.abspath(os.path.dirname(__file__))
+	app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite://" + os.path.join(basedir, "jobscore.db")
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
