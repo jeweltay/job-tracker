@@ -6,11 +6,16 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# DB config
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "jobscore.db")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# Database config - works both locally and in production
+if 'DATABASE_URL' in os.environ:
+    # Production (on Render.com)
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ['DATABASE_URL'].replace("postgres://", "postgresql://", 1)
+else:
+    # Local development (on laptop)
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "jobscore.db")
 
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 class Job(db.Model):
