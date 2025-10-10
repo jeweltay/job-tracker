@@ -17,6 +17,7 @@ else:
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"connect_args": {"sslmode": "require"}}
 
 class Job(db.Model):
     __tablename__ = "applications"
