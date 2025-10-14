@@ -1,7 +1,7 @@
 # app.py - COMPLETE CRUD SYSTEM
 import os
 import csv
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -559,6 +559,51 @@ def debug_dashboard():
         }
     except Exception as e:
         return {'error': str(e)}
+
+@app.route("/export-jobs")
+def export_jobs():
+    try:
+        # Get all jobs (you can add filters later if needed)
+        jobs = Job.query.all()
+        
+        # Create CSV content
+        output = []
+        # CSV header row
+        output.append("Company,Job Title,Location,Industry,Application Date,Status,Interest Level,Career Fit,Growth Potential,Salary Fit,Total Score,Notes")
+        
+        # Add each job as a row
+        for job in jobs:
+            # Clean data for CSV (handle commas, quotes, etc.)
+            company = f'"{job.company_name}"' if ',' in job.company_name else job.company_name
+            title = f'"{job.job_title}"' if ',' in job.job_title else job.job_title
+            notes = f'"{job.notes}"' if job.notes and ',' in job.notes else (job.notes or "")
+            
+            row = [
+                company,
+                title,
+                job.location or "",
+                job.job_type or "",
+                job.application_date or "",
+                job.response_status or "",
+                str(job.interest_level),
+                str(job.career_fit_now),
+                str(job.growth_potential),
+                str(job.salary_fit),
+                str(job.total_score),
+                notes
+            ]
+            output.append(",".join(row))
+        
+        # Create the response
+        response = "\n".join(output)
+        return Response(
+            response,
+            mimetype="text/csv",
+            headers={"Content-disposition": "attachment; filename=job_applications.csv"}
+        )
+        
+    except Exception as e:
+        return f"Error exporting data: {str(e)}", 500
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
