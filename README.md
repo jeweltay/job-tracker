@@ -35,12 +35,6 @@ Job Tracker is a full-stack web application that transforms job search chaos int
 - Analyze industry fit and performance patterns
 - Discover career pivot sweet spots through data visualization
 
-## Installation
-```bash
-git clone https://github.com/jeweltay/job-tracker
-cd job-tracker
-pip install -r requirements.txt
-python app.py
 
 ## Design Choices
 The application focuses on user-centric design with guided analytics that prevent meaningless chart combinations. The custom chart builder specifically addresses the three most critical questions job seekers face about their application pipeline, interest alignment, and industry fit.
