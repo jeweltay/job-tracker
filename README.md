@@ -1,7 +1,7 @@
 # Job Application Analytics Dashboard
 
 ## Video Presentation
-[Link to video]
+(https://youtu.be/omKjLPmh3fY)
 
 ## Live Demo
 **[View Live Application](https://job-tracker-u7gb.onrender.com/)**
